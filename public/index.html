@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./index.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Servicios de empresa</h1>
+
+    <form id="buscarFormularios">
+        <label for="tipoIdentificacion">Tipo de Identificación:</label>
+        <select id="tipoIdentificacion" name="tipoIdentificacion">
+          <option value="cedula">CC</option>
+          <option value="tarjeta">Tarjeta de identidad</option>
+          <option value="otro">Otro</option>
+        </select>
+    
+        <label for="numeroIdentificacion">Número de Identificación:</label>
+        <input type="text" id="idUsuario" name="idUsuario">
+        <button type="button" onclick="buscarUsuario()">Buscar</button>
+      </form>
+
+      <table class="tableC" id="tablaUsuarios">
+        <thead class="container">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Correo Electrónico</th>
+                <th>Edad</th>
+            </tr>
+        </thead>
+        <tbody id="tablaUsuariosBody">
+            <!-- Los datos de los usuarios se agregarán aquí dinámicamente con JavaScript -->
+        </tbody>
+    </table>
+</body>
+<script>
+  function buscarUsuario() {
+        const idUsuario = document.getElementById('idUsuario').value;
+        
+        fetch(`/usuario/${idUsuario}`)
+            .then(response => response.json())
+            .then(usuario => {
+                const tablaUsuariosBody = document.getElementById('tablaUsuariosBody');
+                tablaUsuariosBody.innerHTML = '';
+                
+                const fila = `
+                    <tr>
+                        <td>${usuario.id}</td>
+                        <td>${usuario.name}</td>
+                        <td>${usuario.lastName}</td>
+                        <td>${usuario.email}</td>
+                        <td>${usuario.age}</td>
+                    </tr>
+                `;
+                
+                tablaUsuariosBody.innerHTML = fila;
+            })
+            .catch(error => {
+                console.error('Error al obtener datos del usuario:', error);
+            });
+    }
+</script>
+</html>
